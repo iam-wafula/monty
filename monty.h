@@ -7,7 +7,7 @@
 #include <ctype.h>
 
 /**
- * struct stack_s - doubly linked list node (stack)
+ * struct stack_s - doubly linked list node
  * @n: integer value
  * @prev: previous node
  * @next: next node
@@ -20,9 +20,9 @@ typedef struct stack_s
 } stack_t;
 
 /**
- * struct instruction_s - opcode mapping structure
+ * struct instruction_s - opcode mapping
  * @opcode: command string
- * @f: function pointer to opcode handler
+ * @f: function pointer
  */
 typedef struct instruction_s
 {
@@ -30,22 +30,26 @@ typedef struct instruction_s
     void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/* ===================== CORE OPCODES ===================== */
+/* ================= CORE OPCODES ================= */
 void push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
 
-/* ===================== MORE OPCODES ===================== */
+/* ================= STACK OPS ================= */
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
 void swap(stack_t **stack, unsigned int line_number);
 void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
 
-/* ===================== EXECUTION ENGINE ===================== */
+/* ================= ARITHMETIC OPS ================= */
+void _div(stack_t **stack, unsigned int line_number);
+void mul(stack_t **stack, unsigned int line_number);
+
+/* ================= EXECUTION ENGINE ================= */
 void execute_file(char *filename, stack_t **stack);
 void (*get_op(char *opcode))(stack_t **, unsigned int);
 
-/* ===================== HELPERS ===================== */
+/* ================= HELPERS ================= */
 int is_number(char *str);
 void push_node(stack_t **stack, int n);
 void free_stack(stack_t *stack);
