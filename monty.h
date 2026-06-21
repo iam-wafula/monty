@@ -6,12 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 
-/**
- * struct stack_s - doubly linked list node
- * @n: integer value
- * @prev: previous node
- * @next: next node
- */
+/* STACK STRUCT */
 typedef struct stack_s
 {
     int n;
@@ -19,39 +14,25 @@ typedef struct stack_s
     struct stack_s *next;
 } stack_t;
 
-/**
- * struct instruction_s - opcode mapping
- * @opcode: command string
- * @f: function pointer
- */
+/* OPCODE STRUCT */
 typedef struct instruction_s
 {
     char *opcode;
     void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/* ================= CORE OPCODES ================= */
+/* GLOBAL MODE */
+extern int mode;
+
+/* CORE */
 void push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
 
-/* ================= STACK OPS ================= */
-void pint(stack_t **stack, unsigned int line_number);
-void pop(stack_t **stack, unsigned int line_number);
-void swap(stack_t **stack, unsigned int line_number);
-void add(stack_t **stack, unsigned int line_number);
-void nop(stack_t **stack, unsigned int line_number);
+/* MODE */
+void set_stack_mode(stack_t **stack, unsigned int line_number);
+void set_queue_mode(stack_t **stack, unsigned int line_number);
 
-/* ================= ARITHMETIC OPS ================= */
-void _div(stack_t **stack, unsigned int line_number);
-void mul(stack_t **stack, unsigned int line_number);
-
-/* ================= EXECUTION ENGINE ================= */
-void execute_file(char *filename, stack_t **stack);
-void (*get_op(char *opcode))(stack_t **, unsigned int);
-
-/* ================= HELPERS ================= */
-int is_number(char *str);
-void push_node(stack_t **stack, int n);
-void free_stack(stack_t *stack);
+/* EXECUTOR */
+void execute(char *opcode, char *arg, stack_t **stack, unsigned int line_number);
 
 #endif

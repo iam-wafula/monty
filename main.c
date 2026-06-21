@@ -1,10 +1,11 @@
 #include "monty.h"
 
-/**
- * main - entry point
- */
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
+    FILE *file;
+    char *line = NULL;
+    size_t len = 0;
+    unsigned int line_number = 0;
     stack_t *stack = NULL;
 
     if (argc != 2)
@@ -13,8 +14,26 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    execute_file(argv[1], &stack);
-    free_stack(stack);
+    file = fopen(argv[1], "r");
+    if (!file)
+    {
+        fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+        exit(EXIT_FAILURE);
+    }
 
-    return (0);
+    while (getline(&line, &len, file) != -1)
+    {
+        line_number++;
+
+        char *opcode = strtok(line, " \t\n");
+
+        if (!opcode || opcode[0] == '#')
+            continue;
+
+        execute(opcode, &stack, line_number);
+    }
+
+    free(line);
+    fclose(file);
+    return 0;
 }
