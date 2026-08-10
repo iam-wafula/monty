@@ -7,12 +7,17 @@ void execute(char *opcode, char *arg, stack_t **stack, unsigned int line_number)
     instruction_t ops[] = {
         {"push", push},
         {"pall", pall},
+        {"pop", pop},
+        {"swap", swap},
+
         {"pchar", pchar},
         {"pstr", pstr},
         {"rotl", rotl},
         {"rotr", rotr},
+
         {"stack", set_stack_mode},
         {"queue", set_queue_mode},
+
         {NULL, NULL}
     };
 
@@ -20,7 +25,7 @@ void execute(char *opcode, char *arg, stack_t **stack, unsigned int line_number)
 
     while (ops[i].opcode)
     {
-        if (strcmp(opcode, ops[i].opcode) == 0)
+        if (strcmp(ops[i].opcode, opcode) == 0)
         {
             ops[i].f(stack, line_number);
             return;
@@ -28,6 +33,6 @@ void execute(char *opcode, char *arg, stack_t **stack, unsigned int line_number)
         i++;
     }
 
-    fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
+    fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
     exit(EXIT_FAILURE);
 }

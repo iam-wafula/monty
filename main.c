@@ -1,12 +1,16 @@
 #include "monty.h"
 
+void free_stack(stack_t **stack);
+
 int main(int argc, char **argv)
 {
     FILE *file;
     char *line = NULL;
     size_t len = 0;
-    unsigned int line_number = 0;
+    unsigned int line_number = 1;
     stack_t *stack = NULL;
+    char *opcode;
+    char *arg;
 
     if (argc != 2)
     {
@@ -23,17 +27,20 @@ int main(int argc, char **argv)
 
     while (getline(&line, &len, file) != -1)
     {
+        opcode = strtok(line, " \t\n");
+        arg = strtok(NULL, " \t\n");
+
+        if (opcode && opcode[0] != '#')
+        {
+            execute(opcode, arg, &stack, line_number);
+        }
+
         line_number++;
-
-        char *opcode = strtok(line, " \t\n");
-
-        if (!opcode || opcode[0] == '#')
-            continue;
-
-        execute(opcode, &stack, line_number);
     }
 
     free(line);
     fclose(file);
-    return 0;
+    free_stack(&stack);
+
+    return (0);
 }
